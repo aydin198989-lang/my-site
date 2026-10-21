@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>KZ Обезличиватель (прототип)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🛡 KZ Обезличиватель</h1>
+  <p class="sub">Прототип. Обезличивание персональных данных перед работой с ИИ и обратное восстановление.</p>
+  <div class="note">Всё выполняется в вашем браузере. Файлы и тексты не отправляются на сервер: страница не делает сетевых запросов (это запрещено заголовками сайта). Таблица соответствий хранится зашифрованной в этом браузере.</div>
+
+  <div class="card" id="lock-card">
+    <h2 id="state">…</h2>
+    <input id="pw" type="password" placeholder="Пароль хранилища" autocomplete="off">
+    <input id="pw2" type="password" placeholder="Повторите пароль (минимум 8 символов)" autocomplete="off" hidden>
+    <button id="unlock" class="pri" type="button">Разблокировать</button>
+    <button id="import-lock" type="button">Загрузить резервную копию…</button>
+    <div class="msg" id="lock-msg"></div>
+  </div>
+
+  <div id="work" hidden>
+    <div class="card">
+      <h2>1. Файл (Excel .xlsx, CSV, TXT)</h2>
+      <label class="m"><input type="radio" name="mode" value="anon" checked> <b>Обезличить</b> — заменить данные на токены (перед отправкой ИИ)</label>
+      <label class="m"><input type="radio" name="mode" value="restore"> <b>Восстановить</b> — вернуть настоящие данные (в файле от ИИ)</label>
+      <input id="file" type="file" accept=".xlsx,.csv,.txt,.md">
+      <label class="m"><input type="checkbox" id="cols" checked> Распознавать столбцы по заголовкам (ФИО, ИИН, БИН, телефон, email, IBAN, организация) и заменять их целиком</label>
+      <button id="run" class="pri" type="button">Обработать и скачать</button>
+      <div class="msg" id="msg"></div>
+      <a id="dl" hidden></a>
+      <details id="prev" hidden><summary>Предпросмотр замен</summary><pre id="prevtxt"></pre></details>
+      <p class="sub">Нет под рукой файла? <a href="test_klienty.xlsx" download>Скачать тестовый Excel</a> (все данные вымышленные).</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Текст (вставить и обработать)</h2>
+      <textarea id="tin" rows="5" placeholder="Вставьте текст сюда"></textarea>
+      <button id="t-anon" class="pri" type="button">Обезличить</button>
+      <button id="t-rest" class="pri" type="button">Восстановить</button>
+      <textarea id="tout" rows="5" readonly placeholder="Результат"></textarea>
+      <button id="t-copy" type="button">Копировать результат</button>
+      <div class="msg" id="tmsg"></div>
+    </div>
+
+    <div class="card">
+      <h2>3. Хранилище</h2>
+      <p class="sub">Таблица соответствий лежит только в этом браузере. На другом компьютере или после очистки данных браузера она пропадёт, поэтому делайте резервную копию (она зашифрована паролем).</p>
+      <button id="lock" type="button">Заблокировать</button>
+      <button id="export" type="button">Скачать резервную копию</button>
+      <button id="import" type="button">Загрузить резервную копию…</button>
+      <button id="selftest" type="button">Самотест</button>
+      <button id="reset" class="danger" type="button">Удалить хранилище</button>
+      <div class="msg" id="smsg"></div>
+      <pre id="log" hidden></pre>
+    </div>
+  </div>
+  <input id="backup-file" type="file" accept=".json" hidden>
+
+  <div class="warn">Прототип, написанный с помощью ИИ, независимой проверки безопасности не проходил. Поиск данных эвристический: перед отправкой файла в ИИ просмотрите его глазами. Для проверки используйте вымышленные данные.</div>
+
+  <script src="detector.js"></script>
+  <script src="vault.js"></script>
+  <script src="zip.js"></script>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
